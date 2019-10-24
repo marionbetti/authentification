@@ -46,8 +46,10 @@ router.post("/", (req, resp) => {
             // 7 create mon profil
             utilisateur.save().then(nouveauCompte => {
               // 8 retourner le nouveau compte avec {"_id": "foiiohohlb"}
+              const token = nouveauCompte.generateAuthenToken();
+
               const result = _.pick(nouveauCompte, ["_id", "role"]);
-              resp.send(result);
+              resp.header("x-auth", token).send(result);
             });
           });
         });

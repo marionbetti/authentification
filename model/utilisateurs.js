@@ -1,11 +1,23 @@
 const Joi = require("@hapi/joi");
 const mongoose = require("mongoose");
+const jwt = require("jsonwebtoken");
 
 const schemaUtilisateur = new mongoose.Schema({
   login: String,
   mdp: String,
   role: String
 });
+
+// payload pour générer des tokens
+schemaUtilisateur.methods.generateAuthenToken = function() {
+  const payload = {
+    _id: this._id,
+    role: this.role
+  };
+
+  const token = jwt.sign(payload, "secret");
+  return token; // chaine de caractere cryptée
+};
 
 const Utilisateur = mongoose.model("utilisateurs", schemaUtilisateur);
 
