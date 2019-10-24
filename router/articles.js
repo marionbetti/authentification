@@ -15,10 +15,10 @@ router.get("/:id", (req, resp) => {
   // http://localhost:5000/api/articles
   // POST
   // body
-  // { "title": "article 1", "contenu", "un  peu de contenu"}
+  // { "title" : "article 1" , "contenu" : "un peu de contenu"}
 
+  //
   const verifId = mongoose.Types.ObjectId.isValid(id);
-  // pour vérifier que les champs sont bien valide
 
   if (!verifId) {
     return resp.status(400).send(`${id} invalid`);
@@ -33,7 +33,8 @@ router.get("/:id", (req, resp) => {
       resp.status(404).send(error.details[0].message);
     });
 });
-// { "title": "ar", "contenu", "un  peu de contenu"}
+
+// { "title" : "ar" , "contenu" : "un peu de contenu"}
 
 router.post("/", (req, resp) => {
   validationArticle(req.body)
@@ -64,8 +65,8 @@ router.put("/:id", (req, resp) => {
       Article.findById(id).then(article => {
         if (!article) return resp.status(404).send([]);
         article.title = req.body.title;
+        // attention ça manque
         article.contenu = req.body.contenu;
-
         article.save().then(result => {
           resp.send(result);
         });

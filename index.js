@@ -1,15 +1,18 @@
 const articlesRouter = require("./router/articles");
+const utilisateurRouter = require("./router/utilisateurs");
 const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
 
 app.use(express.json());
 app.use("/api/articles", articlesRouter);
+app.use("/api/utilisateurs", utilisateurRouter);
 
 mongoose
   .connect("mongodb://localhost/blog", {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useFindAndModify: true
   })
 
   .then(function() {
