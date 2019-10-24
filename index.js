@@ -1,4 +1,5 @@
 const articlesRouter = require("./router/articles");
+const connexionRouter = require("./router/connexion");
 const utilisateurRouter = require("./router/utilisateurs");
 const express = require("express");
 const mongoose = require("mongoose");
@@ -7,6 +8,7 @@ const app = express();
 app.use(express.json());
 app.use("/api/articles", articlesRouter);
 app.use("/api/utilisateurs", utilisateurRouter);
+app.use("/api/connexion", connexionRouter);
 
 mongoose
   .connect("mongodb://localhost/blog", {
