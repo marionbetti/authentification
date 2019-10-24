@@ -1,6 +1,7 @@
 const { validation, Utilisateur } = require("../model/utilisateurs");
 const express = require("express");
 const router = express.Router();
+const bcrypt = require("bcrypt");
 
 router.get("/", (req, resp) => {
   Utilisateur.find().then(result => {
@@ -20,19 +21,30 @@ router.post("/", (req, resp) => {
       // si ok => je passe à l'étape suivante
 
       // vérifier que le login (email) n'existe pas déjà ?
+      Utilisateur.find({ login: req.body.login }).then(result => {
+        //console.log(result);
+        if (result.length !== 0)
+          return resp.status(400).send("login existe déjà !");
+        // si ok => je passe à l'étape suivante
+        // la création du profil
 
-      // si ok => je passe à l'étape suivante
+        //Crypter le mot de passe
+        // ralentir le hacker pour le vol d'identité
 
-      // la création du profil
+        bcrypt.genSalt(10).then(salt => {
+          bcrypt.hash(req.body.mdp, salt).then(hashedPassword => {
+            //créer le profil avec un mot de passe hashé !
+            const utilisateur = new Utilisateur({
+              login: req.body.login,
+              mdp: hashedPassword,
+              role: req.body.role
+            });
 
-      const utilisateur = new Utilisateur({
-        login: req.body.login,
-        mdp: req.body.mdp,
-        role: req.body.role
-      });
-
-      utilisateur.save().then(() => {
-        resp.send("nouvel utilisateur créé !");
+            utilisateur.save().then(() => {
+              resp.send("nouvel utilisateur créé !");
+            });
+          });
+        });
       });
     })
     .catch(error => {

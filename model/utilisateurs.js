@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 
 const schemaUtilisateur = new mongoose.Schema({
   login: String,
-  mdo: String,
+  mdp: String,
   role: String
 });
 
