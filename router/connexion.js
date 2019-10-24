@@ -8,10 +8,17 @@
 // si pas conformes => retour c'est pas conforme
 // si conforme => jwt
 
+// middleware = entre la req jusqu'a la reponse
+// ex cors...
+// expressjs
+// helmet
+// pour pouvoir sécurisé on utilise une middleware function
+
 const express = require("express");
 const router = express.Router();
 const { Utilisateur } = require("../model/utilisateurs"); // entre cote car il y'en a plusieurs à l'export
 const bcrypt = require("bcrypt");
+
 //POSTMAN
 //http://localhost:5000/api/connexion
 //  POST

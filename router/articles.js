@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 const { Article, validationArticle } = require("../model/articles");
+const auth = require("../middleware/autorisation");
 
 router.get("/", async (req, resp) => {
   const result = await Article.find();
@@ -36,7 +37,7 @@ router.get("/:id", (req, resp) => {
 
 // { "title" : "ar" , "contenu" : "un peu de contenu"}
 
-router.post("/", (req, resp) => {
+router.post("/", auth, (req, resp) => {
   validationArticle(req.body)
     .then(() => {
       const newArticle = new Article({
