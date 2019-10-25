@@ -5,7 +5,12 @@ const jwt = require("jsonwebtoken");
 const schemaUtilisateur = new mongoose.Schema({
   login: String,
   mdp: String,
-  role: String
+  role: {
+    type: String,
+    default: "traducteur",
+    enum: ["admin", "traducteur", "redacteur"] // pour ne donner que c'est valeur
+    // pas possible de créer autre choses que "admin", "traducteur", "redacteur"
+  }
 });
 
 // payload pour générer des tokens
@@ -26,10 +31,11 @@ function validationUtilisateur(profil) {
     login: Joi.string()
       .email()
       .required(),
-    mdp: Joi.string().required(),
-    role: Joi.string()
-      .min(3)
-      .required()
+    mdp: Joi.string().required()
+    // role: Joi.string()
+    //   .min(3)
+    //   .required()
+    // plus besoin car on a prédéfini un role == traducteur
   };
   const schema = Joi.object(schemaUtilisateurJoi);
   return schema.validateAsync(profil);
